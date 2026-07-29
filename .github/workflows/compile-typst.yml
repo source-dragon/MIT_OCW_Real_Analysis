@@ -24,6 +24,15 @@ jobs:
           sudo mv "typst-x86_64-unknown-linux-musl/typst" /usr/local/bin/typst
           typst --version
 
+      - name: Install New Computer Modern fonts
+        run: |
+          sudo mkdir -p /usr/local/share/fonts/newcomputermodern
+          curl -fsSL https://mirrors.ctan.org/fonts/newcomputermodern.zip -o newcm.zip
+          unzip -o newcm.zip -d newcm
+          sudo find newcm -type f -name '*.otf' -exec cp -t /usr/local/share/fonts/newcomputermodern/ {} +
+          sudo fc-cache -f
+          fc-list | grep -i "new computer modern" | wc -l | xargs echo "Installed New Computer Modern font files:"
+
       - name: Compile all non-style Typst files to PDF
         run: |
           for file in *.typ; do
@@ -37,5 +46,5 @@ jobs:
       - name: Upload PDF artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: typst-pdfs
+          name: MIT_OCW_Real_Analysis-notes-by-Source-Dragon-${{ github.sha }}
           path: ./*.pdf
