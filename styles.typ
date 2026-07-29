@@ -2,6 +2,7 @@
   #set text(font: "New Computer Modern")
   #show heading: set text(font: "New Computer Modern Sans")
   #show raw: set text(font: "New Computer Modern Mono")
+  #set par(justify: true)
   #set page(
     header: [Notes to MIT OpenCourseWare#h(1fr)*Real Analysis*],
     footer: [
