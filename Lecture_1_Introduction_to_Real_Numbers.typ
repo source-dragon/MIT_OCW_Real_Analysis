@@ -1,8 +1,13 @@
-= Properties of a continious function
+#import "styles.typ": *
+#show: init
+
+= Lecture 1: Introduction to Real Numbers
+
+== Properties of a continious function
 
 For $f(x)$, if it is continious, if $exists f(x)<0<f(y)$, we have $x<z<y$ that makes $f(z)=0$.
 
-= Frequently used sets
+== Frequently used sets
 
 *Real Numbers* $RR$
 
@@ -12,25 +17,25 @@ For $f(x)$, if it is continious, if $exists f(x)<0<f(y)$, we have $x<z<y$ that m
 
 *Integers* $ZZ$
 
-= Rational numbers
+== Rational numbers
 
 A rational number can be represented as $m/n$, where $m in ZZ, n in NN$. A single rational number can be represented in various ways. If $m_1/n_1=m_2/n_2$, we have $m_1n_2=m_2n_1$.
 
-== Why rational numbers produce rational numbers after operations?
+=== Why rational numbers produce rational numbers after operations?
 
-=== Addition
+==== Addition
 
 If we add two rational numbers together, e.g. $m_!/n_1+m_2/n_2$, we get $(m_1n_2+m_2n_1)/(n_1n_2)$, where $m_1n_2+m_2n_1$ and $n_1n_2$ are all integers. And that makes the result a rational number. So $m_1/n_1+m_2/n_2 in QQ$.
 
-=== Multiplication
+==== Multiplication
 
 If we multiply two rational numbers together, e.g. $m_!/n_1 dot.c m_2/n_2$, we get $(m_1m_2)/(n_1n_2)$, where $m_1m_2$ and $n_1n_2$ are all integers. And that makes the result a rational number. So $m_1/n_1 dot.c m_2/n_2 in QQ$.
 
-= What is a Field
+== What is a Field
 
 A Field is a set with operations: $+$ and $dot.c$
 
-= Properties of Addition ($+$)
+== Properties of Addition ($+$)
 
 ① For all $x in FF$, $y in FF$, $x+y in FF$.
 
@@ -40,7 +45,7 @@ A Field is a set with operations: $+$ and $dot.c$
 
 ④ For $x,y,z in FF$, we have $(x+y)+z=x+(y+z)$
 
-== Why can't there be two zeroes?
+=== Why can't there be two zeroes?
 
 Assume that we have two zeroes, $O_1 eq.not O_2$, we have:
 
@@ -54,7 +59,7 @@ So there can only be one Zero in a field.
 
 
 
-= Properties of Multiplication
+== Properties of Multiplication
 
 ① For all $x in FF$, $y in FF$, $x dot.c y in FF$.
 
@@ -66,6 +71,6 @@ So there can only be one Zero in a field.
 
 
 
-= Examples
+== Examples
 
 $RR$ and $QQ$ are Fields, but $NN$ and $ZZ$ aren't.

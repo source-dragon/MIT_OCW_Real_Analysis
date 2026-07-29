@@ -1,4 +1,7 @@
-= Lecture 2 Introduction to Real Numbers (cont.)
+#import "styles.typ": *
+#show: init
+
+= Lecture 2: Introduction to Real Numbers (cont.)
 
 == "complete" and "incomplete" fields
 
