@@ -7,28 +7,63 @@ on:
 
 jobs:
   compile:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Typst
+      - name: Resolve versions and cache keys
+        id: cache-keys
         run: |
-          # Resolve the latest Typst release; fall back to a pinned version if the API is rate-limited
           TYPST_VERSION="$(curl -fsSL https://api.github.com/repos/typst/typst/releases/latest | grep -oP '"tag_name":\s*"v?\K[0-9][^"]*')"
           if [ -z "$TYPST_VERSION" ]; then TYPST_VERSION="0.15.1"; fi
-          echo "Installing Typst v${TYPST_VERSION}"
-          curl -fsSL "https://github.com/typst/typst/releases/download/v${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz" -o typst.tar.xz
-          tar -xf typst.tar.xz
+          echo "typst_version=${TYPST_VERSION}" >> "$GITHUB_OUTPUT"
+          TYPST_URL="https://github.com/typst/typst/releases/download/v${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz"
+          FONT_URL="https://mirrors.ctan.org/fonts/newcomputermodern.zip"
+          echo "typst_key=typst-$(echo -n "${TYPST_URL}" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+          echo "font_key=fonts-$(echo -n "${FONT_URL}" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+          echo "Typst ${TYPST_VERSION} | typst_key=${TYPST_URL} | font_key=${FONT_URL}"
+
+      - name: Cache Typst package
+        id: cache-typst
+        uses: actions/cache@v4
+        with:
+          path: downloads/typst.tar.xz
+          key: ${{ steps.cache-keys.outputs.typst_key }}
+
+      - name: Install Typst
+        run: |
+          TYPST_VERSION="${{ steps.cache-keys.outputs.typst_version }}"
+          mkdir -p downloads
+          if [ ! -f downloads/typst.tar.xz ]; then
+            echo "Downloading Typst v${TYPST_VERSION}"
+            curl -fsSL "https://github.com/typst/typst/releases/download/v${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz" -o downloads/typst.tar.xz
+          else
+            echo "Using cached Typst package"
+          fi
+          tar -xf downloads/typst.tar.xz
           sudo mv "typst-x86_64-unknown-linux-musl/typst" /usr/local/bin/typst
           typst --version
 
+      - name: Cache font package
+        id: cache-fonts
+        uses: actions/cache@v4
+        with:
+          path: downloads/newcm.zip
+          key: ${{ steps.cache-keys.outputs.font_key }}
+
       - name: Install New Computer Modern fonts
         run: |
+          mkdir -p downloads
+          if [ ! -f downloads/newcm.zip ]; then
+            echo "Downloading New Computer Modern fonts"
+            curl -fsSL https://mirrors.ctan.org/fonts/newcomputermodern.zip -o downloads/newcm.zip
+          else
+            echo "Using cached font package"
+          fi
+          unzip -o downloads/newcm.zip -d newcm
           sudo mkdir -p /usr/local/share/fonts/newcomputermodern
-          curl -fsSL https://mirrors.ctan.org/fonts/newcomputermodern.zip -o newcm.zip
-          unzip -o newcm.zip -d newcm
           sudo find newcm -type f -name '*.otf' -exec cp -t /usr/local/share/fonts/newcomputermodern/ {} +
           sudo fc-cache -f
           fc-list | grep -i "new computer modern" | wc -l | xargs echo "Installed New Computer Modern font files:"
