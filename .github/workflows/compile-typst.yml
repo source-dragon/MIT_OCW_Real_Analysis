@@ -1,0 +1,35 @@
+name: Compile Typst to PDF
+
+on:
+  push:
+    branches: main
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Typst
+        run: |
+          curl -sSL https://apt.typst.sh | sudo bash
+          apt-get update && apt-get install -y typst
+
+      - name: Compile all non-style Typst files to PDF
+        run: |
+          for file in *.typ; do
+            if [[ "$file" != "styles.typ" ]]; then
+              echo "Compiling $file..."
+              typst compile "$file" "${file%.typ}.pdf"
+              echo "Successfully compiled: $file -> ${file%.typ}.pdf"
+            fi
+          done
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: typst-pdfs
+          path: ./*.pdf

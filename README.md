@@ -1,4 +1,6 @@
 # MIT_OCW_Real_Analysis
-Notes for MIT OpenCourseware's Real Analysis
+Notes for MIT OpenCourseWare's Real Analysis
 
-https://ocw.mit.edu/courses/18-100b-real-analysis-spring-2025/
+Brought to you by Source Dragon.
+
+Original course: https://ocw.mit.edu/courses/18-100b-real-analysis-spring-2025/
