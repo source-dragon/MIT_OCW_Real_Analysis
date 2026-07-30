@@ -4,7 +4,7 @@
   #show raw: set text(font: "New Computer Modern Mono")
   #set par(justify: true)
   #set page(
-    header: [Notes to MIT OpenCourseWare#h(1fr)*Real Analysis*],
+    header: [Notes to MIT OpenCourseWare#h(1fr)`18.100B S25` *Real Analysis*],
     footer: [
       crafted by *Source Dragon* `@source-dragon`#h(1fr)repo: `source-dragon/MIT_OCW_Real_Analysis`\
       #align(center)[#context counter(page).display() / #context counter(page).final().at(0)]
